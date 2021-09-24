@@ -90,7 +90,7 @@ const galleryItemsMarkup = galleryItems.map(createGalleryItemMarkup).join('');
 galleryList.innerHTML = galleryItemsMarkup;
 
 galleryList.addEventListener('click', openModalWithOriginalImgByClick);
-closeModalBtn.addEventListener('click', closeModalByBtn);
+closeModalBtn.addEventListener('click', closeModal);
 
 function openModalWithOriginalImgByClick(evt) {
   evt.preventDefault();
@@ -105,14 +105,23 @@ function openModalWithOriginalImgByClick(evt) {
   openModal(originalImageSrc, imageDescription);
 }
 
-function closeModalByBtn() {
+function closeModal() {
+  window.removeEventListener('keydown', closeMadalByEsc);
   modal.classList.remove('is-open');
   modalImage.src = '';
   modalImage.alt = '';
 }
 
 function openModal(src, alt) {
+  window.addEventListener('keydown', closeMadalByEsc);
   modal.classList.add('is-open');
   modalImage.src = src;
   modalImage.alt = alt;
+}
+function closeMadalByEsc(evt) {
+  const ESC_KEY_CODE = 'Escape';
+
+  if (evt.code === ESC_KEY_CODE) {
+    closeModal();
+  }
 }
