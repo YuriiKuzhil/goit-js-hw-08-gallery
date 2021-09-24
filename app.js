@@ -66,13 +66,14 @@ const galleryItems = [
 
 const galleryList = document.querySelector('.js-gallery');
 const modal = document.querySelector('.js-lightbox');
+const modalImage = document.querySelector('.lightbox__image');
 const closeModalBtn = document.querySelector('[data-action="close-lightbox"]');
 
 const createGalleryItemMarkup = ({ preview, original, description }) => {
   return `<li class="gallery__item">
           <a
             class="gallery__link"
-            
+            href="${original}"
           >
             <img
               class="gallery__image"
@@ -86,17 +87,32 @@ const createGalleryItemMarkup = ({ preview, original, description }) => {
 };
 
 const galleryItemsMarkup = galleryItems.map(createGalleryItemMarkup).join('');
-
 galleryList.innerHTML = galleryItemsMarkup;
 
-galleryList.addEventListener('click', evt => {
+galleryList.addEventListener('click', openModalWithOriginalImgByClick);
+closeModalBtn.addEventListener('click', closeModalByBtn);
+
+function openModalWithOriginalImgByClick(evt) {
+  evt.preventDefault();
+
   if (!evt.target.classList.contains('gallery__image')) {
     return;
   }
-  evt.target.dataset.source;
-  modal.classList.add('is-open');
-});
 
-closeModalBtn.addEventListener('click', () => {
+  const originalImageSrc = evt.target.dataset.source;
+  const imageDescription = evt.target.alt;
+
+  openModal(originalImageSrc, imageDescription);
+}
+
+function closeModalByBtn() {
   modal.classList.remove('is-open');
-});
+  modalImage.src = '';
+  modalImage.alt = '';
+}
+
+function openModal(src, alt) {
+  modal.classList.add('is-open');
+  modalImage.src = src;
+  modalImage.alt = alt;
+}
