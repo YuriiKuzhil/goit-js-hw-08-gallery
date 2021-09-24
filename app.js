@@ -68,6 +68,7 @@ const galleryList = document.querySelector('.js-gallery');
 const modal = document.querySelector('.js-lightbox');
 const modalImage = document.querySelector('.lightbox__image');
 const closeModalBtn = document.querySelector('[data-action="close-lightbox"]');
+const backdropModal = document.querySelector('.lightbox__overlay');
 
 const createGalleryItemMarkup = ({ preview, original, description }) => {
   return `<li class="gallery__item">
@@ -91,6 +92,7 @@ galleryList.innerHTML = galleryItemsMarkup;
 
 galleryList.addEventListener('click', openModalWithOriginalImgByClick);
 closeModalBtn.addEventListener('click', closeModal);
+backdropModal.addEventListener('click', closeModalByClickBackdrop);
 
 function openModalWithOriginalImgByClick(evt) {
   evt.preventDefault();
@@ -106,22 +108,27 @@ function openModalWithOriginalImgByClick(evt) {
 }
 
 function closeModal() {
-  window.removeEventListener('keydown', closeMadalByEsc);
+  window.removeEventListener('keydown', closeModalByEsc);
   modal.classList.remove('is-open');
   modalImage.src = '';
   modalImage.alt = '';
 }
 
 function openModal(src, alt) {
-  window.addEventListener('keydown', closeMadalByEsc);
+  window.addEventListener('keydown', closeModalByEsc);
   modal.classList.add('is-open');
   modalImage.src = src;
   modalImage.alt = alt;
 }
-function closeMadalByEsc(evt) {
+function closeModalByEsc(evt) {
   const ESC_KEY_CODE = 'Escape';
 
   if (evt.code === ESC_KEY_CODE) {
+    closeModal();
+  }
+}
+function closeModalByClickBackdrop(evt) {
+  if (evt.currentTarget === evt.target) {
     closeModal();
   }
 }
