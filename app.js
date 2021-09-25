@@ -124,16 +124,19 @@ function openModal(src, alt) {
   modalImage.src = src;
   modalImage.alt = alt;
 }
+
 function closeModalByEsc(evt) {
   if (evt.code === 'Escape') {
     closeModal();
   }
 }
+
 function closeModalByClickBackdrop(evt) {
   if (evt.currentTarget === evt.target) {
     closeModal();
   }
 }
+
 function changeImageByArrow(evt) {
   const currentIndex = arrayOfgalletyImages.indexOf(modalImage.src);
   if (evt.code === 'ArrowLeft') {
@@ -142,6 +145,7 @@ function changeImageByArrow(evt) {
     rightClick(currentIndex);
   }
 }
+
 function leftClick(currentIndex) {
   let nextIndex = currentIndex - 1;
   if (nextIndex === -1) {
@@ -149,6 +153,7 @@ function leftClick(currentIndex) {
   }
   modalImage.src = arrayOfgalletyImages[nextIndex];
 }
+
 function rightClick(currentIndex) {
   let nextIndex = currentIndex + 1;
   if (nextIndex === arrayOfgalletyImages.length) {
