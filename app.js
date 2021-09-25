@@ -65,6 +65,7 @@ const galleryItems = [
 ];
 
 const galleryList = document.querySelector('.js-gallery');
+
 const modal = document.querySelector('.js-lightbox');
 const modalImage = document.querySelector('.lightbox__image');
 const closeModalBtn = document.querySelector('[data-action="close-lightbox"]');
@@ -87,12 +88,15 @@ const createGalleryItemMarkup = ({ preview, original, description }) => {
         `;
 };
 
+const arrayOfgalletyImages = galleryItems.map(item => item.original);
+
 const galleryItemsMarkup = galleryItems.map(createGalleryItemMarkup).join('');
 galleryList.innerHTML = galleryItemsMarkup;
 
 galleryList.addEventListener('click', openModalWithOriginalImgByClick);
 closeModalBtn.addEventListener('click', closeModal);
 backdropModal.addEventListener('click', closeModalByClickBackdrop);
+document.addEventListener('keydown', changeImageByArrow);
 
 function openModalWithOriginalImgByClick(evt) {
   evt.preventDefault();
@@ -121,9 +125,7 @@ function openModal(src, alt) {
   modalImage.alt = alt;
 }
 function closeModalByEsc(evt) {
-  const ESC_KEY_CODE = 'Escape';
-
-  if (evt.code === ESC_KEY_CODE) {
+  if (evt.code === 'Escape') {
     closeModal();
   }
 }
@@ -131,4 +133,26 @@ function closeModalByClickBackdrop(evt) {
   if (evt.currentTarget === evt.target) {
     closeModal();
   }
+}
+function changeImageByArrow(evt) {
+  const currentIndex = arrayOfgalletyImages.indexOf(modalImage.src);
+  if (evt.code === 'ArrowLeft') {
+    leftClick(currentIndex);
+  } else {
+    rightClick(currentIndex);
+  }
+}
+function leftClick(currentIndex) {
+  let nextIndex = currentIndex - 1;
+  if (nextIndex === -1) {
+    nextIndex = arrayOfgalletyImages.length - 1;
+  }
+  modalImage.src = arrayOfgalletyImages[nextIndex];
+}
+function rightClick(currentIndex) {
+  let nextIndex = currentIndex + 1;
+  if (nextIndex === arrayOfgalletyImages.length) {
+    nextIndex = 0;
+  }
+  modalImage.src = arrayOfgalletyImages[nextIndex];
 }
